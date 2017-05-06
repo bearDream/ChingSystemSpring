@@ -23,6 +23,14 @@ public class ResultUtil {
         return result;
     }
 
+    public final static Object success(Integer code,String msg, Object data){
+        Result result = new Result();
+        result.setCode(code);
+        result.setMsg(msg);
+        result.setData(data);
+        return result;
+    }
+
     public final static void success(){
         success(null);
     }

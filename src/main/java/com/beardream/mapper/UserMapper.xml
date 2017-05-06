@@ -16,73 +16,105 @@
     <result column="org_id" jdbcType="INTEGER" property="orgId" />
     <result column="openid" jdbcType="VARCHAR" property="openid" />
     <result column="is_new" jdbcType="INTEGER" property="isNew" />
+    <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="logins" jdbcType="INTEGER" property="logins" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
   </resultMap>
   <sql id="Base_Column_List">
-    user_id, username, password, salt, email, mobile, real_name, gender, birth_date,
-    type, status, org_id, openid, is_new
+    user_id, username, password, salt, email, mobile, real_name, gender, birth_date, 
+    type, status, org_id, openid, is_new, last_login_date, last_login_ip, logins, avatar, 
+    token
   </sql>
-
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <select id="findAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_user
-  </select>
-  <select id="find" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_user
-    where mobile = #{mobile, jdbcType=VARCHAR}
-  </select>
 
-  <select id="findSelective" resultMap="BaseResultMap">
-    SELECT
-      <include refid="Base_Column_List" />
+  <select id="find" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
     from t_user
     <where>
-      <if test="userId != null">
-        and user_id = #{userId}
-      </if>
+      1=1
       <if test="username != null">
-        and username = #{username}
+        AND username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="salt != null">
+        AND salt = #{salt}
       </if>
       <if test="email != null">
-        and email = #{email}
+        AND email = #{email}
       </if>
       <if test="mobile != null">
-        and mobile = #{mobile}
+        AND mobile = #{mobile}
+      </if>
+      <if test="realName != null">
+        AND real_name = #{realName}
       </if>
       <if test="gender != null">
-        and gender = #{gender}
+        AND gender = #{gender,jdbcType=TINYINT}
+      </if>
+      <if test="birthDate != null">
+        AND birth_date = #{birthDate,jdbcType=DATE}
       </if>
       <if test="type != null">
-        and type = #{type}
+        AND type = #{type,jdbcType=TINYINT}
       </if>
       <if test="status != null">
-        and status = #{status}
+        AND status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="orgId != null">
+        AND org_id = #{orgId,jdbcType=INTEGER}
+      </if>
+      <if test="openid != null">
+        AND openid = #{openid,jdbcType=VARCHAR}
+      </if>
+      <if test="isNew != null">
+        AND is_new = #{isNew,jdbcType=INTEGER}
+      </if>
+      <if test="lastLoginDate != null">
+        AND last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastLoginIp != null">
+        AND last_login_ip = #{lastLoginIp,jdbcType=VARCHAR}
+      </if>
+      <if test="logins != null">
+        AND logins = #{logins,jdbcType=INTEGER}
+      </if>
+      <if test="avatar != null">
+        AND avatar = #{avatar,jdbcType=VARCHAR}
+      </if>
+      <if test="token != null">
+        AND token = #{token,jdbcType=VARCHAR}
       </if>
     </where>
-      order by user_id desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_user
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.beardream.model.User" useGeneratedKeys="true" keyProperty="userId">
+  <insert id="insert" parameterType="com.beardream.model.User">
     insert into t_user (user_id, username, password, 
-      email, mobile, gender, 
-      type, status)
+      salt, email, mobile, 
+      real_name, gender, birth_date, 
+      type, status, org_id, 
+      openid, is_new, last_login_date, 
+      last_login_ip, logins, avatar, 
+      token)
     values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, 
-      #{type,jdbcType=TINYINT}, #{status,jdbcType=TINYINT})
+      #{salt,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, #{birthDate,jdbcType=DATE}, 
+      #{type,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{orgId,jdbcType=INTEGER}, 
+      #{openid,jdbcType=VARCHAR}, #{isNew,jdbcType=INTEGER}, #{lastLoginDate,jdbcType=TIMESTAMP}, 
+      #{lastLoginIp,jdbcType=VARCHAR}, #{logins,jdbcType=INTEGER}, #{avatar,jdbcType=VARCHAR}, 
+      #{token,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.beardream.model.User" useGeneratedKeys="true" keyProperty="userId">
+  <insert id="insertSelective" parameterType="com.beardream.model.User">
     insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -94,20 +126,53 @@
       <if test="password != null">
         password,
       </if>
+      <if test="salt != null">
+        salt,
+      </if>
       <if test="email != null">
         email,
       </if>
       <if test="mobile != null">
         mobile,
       </if>
+      <if test="realName != null">
+        real_name,
+      </if>
       <if test="gender != null">
         gender,
+      </if>
+      <if test="birthDate != null">
+        birth_date,
       </if>
       <if test="type != null">
         type,
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="orgId != null">
+        org_id,
+      </if>
+      <if test="openid != null">
+        openid,
+      </if>
+      <if test="isNew != null">
+        is_new,
+      </if>
+      <if test="lastLoginDate != null">
+        last_login_date,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
+      </if>
+      <if test="logins != null">
+        logins,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="token != null">
+        token,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -120,20 +185,53 @@
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null">
         #{mobile,jdbcType=VARCHAR},
       </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
       <if test="gender != null">
         #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="birthDate != null">
+        #{birthDate,jdbcType=DATE},
       </if>
       <if test="type != null">
         #{type,jdbcType=TINYINT},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="isNew != null">
+        #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginDate != null">
+        #{lastLoginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="logins != null">
+        #{logins,jdbcType=INTEGER},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -146,20 +244,53 @@
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null">
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
       <if test="gender != null">
         gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="birthDate != null">
+        birth_date = #{birthDate,jdbcType=DATE},
       </if>
       <if test="type != null">
         type = #{type,jdbcType=TINYINT},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="orgId != null">
+        org_id = #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="isNew != null">
+        is_new = #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginDate != null">
+        last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="logins != null">
+        logins = #{logins,jdbcType=INTEGER},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
       </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
@@ -168,11 +299,22 @@
     update t_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=TINYINT},
+      birth_date = #{birthDate,jdbcType=DATE},
       type = #{type,jdbcType=TINYINT},
-      status = #{status,jdbcType=TINYINT}
+      status = #{status,jdbcType=TINYINT},
+      org_id = #{orgId,jdbcType=INTEGER},
+      openid = #{openid,jdbcType=VARCHAR},
+      is_new = #{isNew,jdbcType=INTEGER},
+      last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      logins = #{logins,jdbcType=INTEGER},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

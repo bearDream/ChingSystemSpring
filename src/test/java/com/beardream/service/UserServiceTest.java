@@ -56,7 +56,7 @@ public class UserServiceTest {
     public void check(){
         User user = new User();
         user.setMobile("15587186809");
-        List<User> u = userMapper.findSelective(user);
+        List<User> u = userMapper.find(user);
         System.out.println(u.get(0).getMobile());
         Assert.assertEquals("15587186809",u.get(0).getMobile());
     }

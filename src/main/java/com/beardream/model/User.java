@@ -1,20 +1,18 @@
 package com.beardream.model;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class User {
-
     private Integer userId;
-    @NotNull
+
     private String username;
-    @NotNull
+
     private String password;
 
     private String salt;
 
     private String email;
-    @NotNull
+
     private String mobile;
 
     private String realName;
@@ -32,6 +30,16 @@ public class User {
     private String openid;
 
     private Integer isNew;
+
+    private Date lastLoginDate;
+
+    private String lastLoginIp;
+
+    private Integer logins;
+
+    private String avatar;
+
+    private String token;
 
     public Integer getUserId() {
         return userId;
@@ -145,6 +153,46 @@ public class User {
         this.isNew = isNew;
     }
 
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
+
+    public String getLastLoginIp() {
+        return lastLoginIp;
+    }
+
+    public void setLastLoginIp(String lastLoginIp) {
+        this.lastLoginIp = lastLoginIp == null ? null : lastLoginIp.trim();
+    }
+
+    public Integer getLogins() {
+        return logins;
+    }
+
+    public void setLogins(Integer logins) {
+        this.logins = logins;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar == null ? null : avatar.trim();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -162,6 +210,11 @@ public class User {
                 ", orgId=" + orgId +
                 ", openid='" + openid + '\'' +
                 ", isNew=" + isNew +
+                ", lastLoginDate=" + lastLoginDate +
+                ", lastLoginIp='" + lastLoginIp + '\'' +
+                ", logins=" + logins +
+                ", avatar='" + avatar + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

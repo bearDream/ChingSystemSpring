@@ -9,22 +9,17 @@ import java.util.List;
 @Mapper
 @Repository
 public interface UserMapper {
-
-    User selectByPrimaryKey(Integer userId);
-
-    List<User> findAll();
-
-    User find(String mobile);
-
-    List<User> findSelective(User user);
-
-    int updateByPrimaryKeySelective(User record);
-
-    int updateByPrimaryKey(User record);
+    int deleteByPrimaryKey(Integer userId);
 
     int insert(User record);
 
     int insertSelective(User record);
 
-    int deleteByPrimaryKey(Integer userId);
+    List<User> find(User user);
+
+    User selectByPrimaryKey(Integer userId);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
 }
